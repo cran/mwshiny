@@ -5,13 +5,14 @@ knitr::opts_chunk$set(
   results = "hold"
 )
 
-## ----load----------------------------------------------------------------
+## ----load, echo=T, results = F, warning=F--------------------------------
 # load libraries
 # note that attaching mwshiny also attaches shiny
 library(mwshiny) # our multiwindow app
 library(ggplot2) # cool visualizations
 library(datasets) # contains the iris dataset
 
+## ----iris data-----------------------------------------------------------
 data(iris) # load iris data
 summary(iris) # just to get a look at what we're dealing with here
 
@@ -61,13 +62,13 @@ ui_win[[2]] <- fluidPage(
 serv_calc <- list()
 
 # I only want to build a scatterplot when I click my build button, so my list will be of length 1
-serv_calc[[1]] <- function(input,calc){
+serv_calc[[1]] <- function(calc){
   # this is going to activate any time I press "build!"
-  observeEvent(input()$go, {
+  observeEvent(calc$go, {
     # create our data frame for visualizing
-    sub.df <- data.frame("x" = iris[iris$Species %in% input()$spec,input()$x_axis],
-                         "y" = iris[iris$Species %in% input()$spec,input()$y_axis],
-                         "species"=iris[iris$Species %in% input()$spec,"Species"])
+    sub.df <- data.frame("x" = iris[iris$Species %in% calc$spec,calc$x_axis],
+                         "y" = iris[iris$Species %in% calc$spec,calc$y_axis],
+                         "species"=iris[iris$Species %in% calc$spec,"Species"])
     
     # add this to calc, since we want to use this in our rendering
     calc[["sub.df"]] <- sub.df
@@ -81,15 +82,16 @@ serv_out <- list()
 
 # we're just rendering our scatter plot based on the iris dataset
 # note the name is the same as the outputid
-serv_out[["iris_scatter"]] <- function(input,calc){
+serv_out[["iris_scatter"]] <- function(calc){
   renderPlot({
+    # we add this check to make sure our plot doesn't try to render before we've ever pressed "Build!"
     if (!is.null(calc$sub.df)){
       # build scatterplot
       ggplot(calc$sub.df, aes(x, y, color = factor(species)))+
         geom_point()+ # make scatter
         ggtitle("Iris Comparisons")+ # add title
-        xlab(input$x_axis)+ # change x axis label
-        ylab(input$y_axis)+ # change y axis label
+        xlab(calc$x_axis)+ # change x axis label
+        ylab(calc$y_axis)+ # change y axis label
         labs(color="species")+ # change legend label
         NULL
     }
@@ -98,7 +100,7 @@ serv_out[["iris_scatter"]] <- function(input,calc){
 
 ## ----mwsapp, eval=F------------------------------------------------------
 #  #run!
-#  mwsApp(win_titles, ui_win, serv_calc, serv_out)
+#  mwsApp(win_titles, ui_win, serv_calc, serv_out, depend = list())
 
 ## ---- out.width="400px", fig.align='center', echo=F----------------------
 knitr::include_graphics("figures/selector.png")

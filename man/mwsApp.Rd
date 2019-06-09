@@ -5,16 +5,18 @@
 \title{Runs shiny app in multiple specified windows.}
 \usage{
 mwsApp(win_titles = c(), ui_win = list(), serv_calc = list(),
-  serv_out = list())
+  serv_out = list(), depend = list())
 }
 \arguments{
 \item{win_titles}{vector of strings, corresponding to window titles. Must be same length as ui_win, and titles must be same index as corresponding ui page in ui_win. No windows can be named 'WindowSelector'.}
 
 \item{ui_win}{list of shiny ui pages. Must be same length as win_titles, and ui page must be same index as corresponding title in win_titles.}
 
-\item{serv_calc}{a named list of functions that calculate variables derived from user input, to be used in rendering output. Each function is of the form function(input, calc), where input is the traditional shiny input, and calc is a named list of reactive values. Variables in must be accessed in the form input()$x. All calculated variables that are needed to render output should be added, named, to the calc list. When using reactive functions such as observeEvent(), each should be contained in a separate function. Note that these functions follow all shiny conventions (reactive values must be accessed in a reactive context, etc.).}
+\item{serv_calc}{a named list of functions that calculate variables derived from user input, to be used in rendering output. Each function is of the form function(calc), where calc is a named list containing the traditional shiny input and user-created reactive values. All calculated variables that are needed to render output should be added, named, to the calc list. When using reactive functions such as observeEvent(), each should be contained in a separate function, and variables dependent on these reactions should be added to calc. Note that these functions follow all shiny conventions (reactive values must be accessed in a reactive context, etc.).}
 
-\item{serv_out}{a named list of functions that render output. Each function is of the form function(input, calc), where input is the traditional shiny input, and calc is a named list of reactive values that have calculated values derived from input. It returns the results of a shiny render function. The name of each function corresponds to its output label. Note that these functions follow all shiny conventions (reactive values must be accessed in a reactive context, etc.).}
+\item{serv_out}{a named list of functions that render output. Each function is of the form function(calc), where calc is a named list containing the traditional shiny input and reactive values that have calculated values derived from input. It returns the results of a shiny render function. The name of each function corresponds to its output label. Note that these functions follow all shiny conventions (reactive values must be accessed in a reactive context, etc.).}
+
+\item{depend}{named list of package dependencies, with the names corresponding to the packages for which .js and .css files will be imported. If value is NA, all .js and .css files will be imported. Otherwise, value must be a vector of strings corresponding to the .js and .css files to be imported, with location relative to the package folder.}
 }
 \value{
 shiny app object (i.e., it runs the app)
@@ -29,9 +31,9 @@ ui_win <- list()
 ui_win[[1]] <- fluidPage(numericInput(inputId = "click", label = "a", value = 1))
 ui_win[[2]] <- fluidPage(plotOutput("clickplot"))
 serv_out <- list()
-serv_out[["clickplot"]] <- function(input, calc){
+serv_out[["clickplot"]] <- function(calc){
   renderPlot({
-      plot(1:input$click,1:input$click)
+      plot(1:calc$click,1:calc$click)
   })
 }
 mwsApp(c("clickinput","clickoutput"),

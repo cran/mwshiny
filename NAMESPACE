@@ -2,3 +2,5 @@
 
 export(mwsApp)
 import(shiny)
+importFrom(htmltools,htmlDependency)
+importFrom(utils,packageVersion)

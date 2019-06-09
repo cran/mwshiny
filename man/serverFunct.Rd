@@ -4,16 +4,14 @@
 \alias{serverFunct}
 \title{Render server output.}
 \usage{
-serverFunct(input, serverValues, output, serv_out_list)
+serverFunct(serverValues, output, serv_out_list)
 }
 \arguments{
-\item{input}{traditional shiny input (reactive values)}
-
-\item{serverValues}{user-created values (reactive values), to be used in rendering output}
+\item{serverValues}{traditional Shiny inputs, as well as user-created values (reactive values), to be used in rendering output}
 
 \item{output}{traditional shiny output}
 
-\item{serv_out_list}{a named list of functions that render output. Each function is of the form function(input, calc), where input is the traditional shiny input, and calc is a named list of reactive values that have calculated values derived from input. It returns the results of a shiny render function. The name of each function corresponds to its output label.}
+\item{serv_out_list}{a named list of functions that render output. Each function is of the form function(calc), where calc is a named list containing the traditional shiny input and reactive values that have calculated values derived from input. It returns the results of a shiny render function. The name of each function corresponds to its output label.}
 }
 \value{
 traditional shiny output argument
