@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 
 ## ----load, echo=T, results = F, warning=F--------------------------------
 # load libraries
-# note that attaching mwshiny also attaches shiny
+# note that attaching mwshiny also attaches Shiny
 library(mwshiny) # our multiwindow app
 library(ggplot2) # cool visualizations
 library(datasets) # contains the iris dataset
@@ -62,7 +62,7 @@ ui_win[[2]] <- fluidPage(
 serv_calc <- list()
 
 # I only want to build a scatterplot when I click my build button, so my list will be of length 1
-serv_calc[[1]] <- function(calc){
+serv_calc[[1]] <- function(calc, sess){
   # this is going to activate any time I press "build!"
   observeEvent(calc$go, {
     # create our data frame for visualizing
@@ -82,7 +82,7 @@ serv_out <- list()
 
 # we're just rendering our scatter plot based on the iris dataset
 # note the name is the same as the outputid
-serv_out[["iris_scatter"]] <- function(calc){
+serv_out[["iris_scatter"]] <- function(calc, sess){
   renderPlot({
     # we add this check to make sure our plot doesn't try to render before we've ever pressed "Build!"
     if (!is.null(calc$sub.df)){

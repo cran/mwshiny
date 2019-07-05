@@ -58,7 +58,7 @@ ui_win[[2]] <- fluidPage(
 # now we do some calculations based on our inputs, to pass to our final rendering of our network
 serv_calc <- list()
 
-serv_calc[[1]] <- function(calc){
+serv_calc[[1]] <- function(calc, sess){
   observeEvent(calc$go, {
     # create our nodes data frame for the visNetowrk render plot to use
     calc[["nodes"]] <- data.frame(id = 1:calc$num_nodes)
@@ -72,7 +72,7 @@ serv_calc[[1]] <- function(calc){
 # now we render our output!
 serv_out <- list()
 
-serv_out[["network"]] <- function(calc){
+serv_out[["network"]] <- function(calc, sess){
   # this function renders our graph, for shiny purposes
   renderVisNetwork({
     # don't render anything if we haven't pressed the graph! button yet!

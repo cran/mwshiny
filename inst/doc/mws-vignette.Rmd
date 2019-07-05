@@ -31,17 +31,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-*mwshiny* provides a simple function, mwsApp(), which allows you to create shiny apps that span multiple windows. It uses all the same conventions and applications as a normal shiny function. To learn more about shiny and find some tutorials, please visit their [website](https://shiny.rstudio.com/). I'll assume basic knowledge of shiny throughout this vignette.
+*mwshiny* provides a simple function, mwsApp(), which allows you to create Shiny apps that span multiple windows. It uses all the same conventions and applications as a normal Shiny function. To learn more about Shiny and find some tutorials, please visit their [website](https://shiny.rstudio.com/). I'll assume basic knowledge of Shiny throughout this vignette.
 
 For now, I'm going to set up a basic multi-window app using the iris dataset, a dataset of several plant species. Note that mwshiny works best when apps are run in external browser windows.
 
 ## Load Libraries and Datasets
 
-As in any typical shiny app, you start by loading any necessary libraries and data that you want to be globally accessed. I'll start by doing that with visualization libraries and the iris dataset.
+As in any typical Shiny app, you start by loading any necessary libraries and data that you want to be globally accessed. I'll start by doing that with visualization libraries and the iris dataset.
 
 ```{r load, echo=T, results = F, warning=F}
 # load libraries
-# note that attaching mwshiny also attaches shiny
+# note that attaching mwshiny also attaches Shiny
 library(mwshiny) # our multiwindow app
 library(ggplot2) # cool visualizations
 library(datasets) # contains the iris dataset
@@ -100,13 +100,13 @@ ui_win[[2]] <- fluidPage(
 
 ```
 
-Note that win_titles and ui_win are the same length. Also, the UI that I want to see in each window matches up to their title (i.e., the UI I want for the controller window is first, then the scatter UI is second in the list).
+Note that win_titles and ui_win are the same length. Also, the UI that I want to see in each window matches up to their title (i.e., the UI I want for the controller window is first, then the scatter UI is second in the list). Further, window titles cannot contain spaces or have any duplicates.
 
 ## Set Up the Calculations
 
 Now that my UI is all set up, I want to set up a derived dataframe that I'll use in my output, created when I click my "Build!" button. Note that this isn't explicitly necessary to do if you would prefer to do such things in render functions -- but if you're using any observe()-type capabilities, this is the variable to do it in.
 
-serv_calc is a list of functions of the form function(calc), where any calculations based on input are done. calc contains all the input values with the same names and can be accessed in the same way (calc$x or calc[[x]]). Any variables that you've made that you want to pass to input should be added to calc with a name, which is a named list of reactive variables. This is done in the traditional manner, i.e. calc[["y"]] <- y. Note that these functions follow the traditional shiny restrictions (reactive variables can only be used in a reactive context, etc.)!
+serv_calc is a list of functions of the form function(calc, sess), where any calculations based on input are done. calc is a reactive list containing all the input values with the same names and can be accessed in the same way (calc$x or calc[[x]]). Any variables that you've made that you want to pass to input should be added to calc with a name, which is a named list of reactive variables. This is done in the traditional manner, i.e. calc[["y"]] <- y. sess is the traditional Shiny session variable. Note that these functions follow the traditional Shiny restrictions (reactive variables can only be used in a reactive context, etc.)!
 
 Further, if you want render objects later based on an observe()-type change, assign the result that you will be using in the render to calc. We can see an example of that interaction below, where we use calc[["sub.df"]] in our render, which changes as the result of our observeEvent().
 
@@ -117,7 +117,7 @@ It's recommended for clarity that you make one function entry for each observe()
 serv_calc <- list()
 
 # I only want to build a scatterplot when I click my build button, so my list will be of length 1
-serv_calc[[1]] <- function(calc){
+serv_calc[[1]] <- function(calc, sess){
   # this is going to activate any time I press "build!"
   observeEvent(calc$go, {
     # create our data frame for visualizing
@@ -136,7 +136,7 @@ serv_calc[[1]] <- function(calc){
 
 Now that I've calculated based on input and set that up to work only when I click "build!", I want to actually render my plot for output.
 
-serv_out is a named list of functions, where each function in the list corresponds to the output that it renders. Functions are of the form function(calc), where calc is the named list which contains traditional shiny input and the calculated variables that we added to previously. Entries in both lists can be accessed in a normal manner (i.e. calc$x or calc[["y"]]). These functions also follow the standard shiny restrictions.
+serv_out is a named list of functions, where each function in the list corresponds to the output that it renders. Functions are of the form function(calc, sess), where calc is the named list which contains traditional Shiny input and the calculated variables that we added to previously, and sess is the traditional Shiny session variable. Entries in both lists can be accessed in a normal manner (i.e. calc$x or calc[["y"]]). These functions also follow the standard Shiny restrictions.
 
 ```{r serv_out}
 # set up our serv_out list
@@ -144,7 +144,7 @@ serv_out <- list()
 
 # we're just rendering our scatter plot based on the iris dataset
 # note the name is the same as the outputid
-serv_out[["iris_scatter"]] <- function(calc){
+serv_out[["iris_scatter"]] <- function(calc, sess){
   renderPlot({
     # we add this check to make sure our plot doesn't try to render before we've ever pressed "Build!"
     if (!is.null(calc$sub.df)){
@@ -163,14 +163,14 @@ serv_out[["iris_scatter"]] <- function(calc){
 
 ## Run Multi-Window Shiny App!
 
-Now that we have all our pieces, we can just plug these in and run our app! Note that we have no heavy .js or .css dependencies in the packages we're using (ggplot2 and datasets). However, other packages, such as shinyDashboard and visNetwork, lean heavily on .js and .css dependencies. For more information and an example using visNetwork to find and specify dependencies, please look at our other vignette "Specifying Package JS and CSS Dependencies with mwshiny".
+Now that we have all our pieces, we can just plug these in and run our app! Note that we have no heavy .js or .css dependencies in the packages we're using (ggplot2 and datasets). However, other packages, such as shinyDashboard and visNetwork, lean heavily on .js and .css dependencies. Even in this case, Shiny has some aesthetic scripts that we may want to specify, though they don't influence our run. For more information and an example using visNetwork to find and specify dependencies, please look at our other vignette "Specifying Package JS and CSS Dependencies with mwshiny".
 
 ```{r mwsapp, eval=F}
 #run!
 mwsApp(win_titles, ui_win, serv_calc, serv_out, depend = list())
 ```
 
-Note that multi-windowed apps work better when run in an external browser. Since I can't show a multi-window shiny app in a vignette form, here are some images of the final result.
+Note that multi-windowed apps work better when run in an external browser. Since I can't show a multi-window Shiny app in a vignette form, here are some images of the final result.
 
 When you initially run mwsApp(), you'll first be greeted by the selection window, where links to your separate windows are displayed:
 
@@ -190,4 +190,4 @@ Once I change some inputs and click "build!", I can see that my scatter window u
 knitr::include_graphics(c("figures/controller_edit.png", "figures/scatter_edit.png"))
 ```
 
-It's as simple as that! Now that you know make a multi-window shiny app, feel free to make some of your own!
+It's as simple as that! Now that you know make a multi-window Shiny app, feel free to make some of your own!

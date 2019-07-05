@@ -2,20 +2,22 @@
 % Please edit documentation in R/mws_utilities.R
 \name{serverFunct}
 \alias{serverFunct}
-\title{Render server output.}
+\title{Renders server output.}
 \usage{
-serverFunct(serverValues, output, serv_out_list)
+serverFunct(serverValues, session, output, serv_out_list)
 }
 \arguments{
 \item{serverValues}{traditional Shiny inputs, as well as user-created values (reactive values), to be used in rendering output}
 
+\item{session}{traditional Shiny server session value}
+
 \item{output}{traditional shiny output}
 
-\item{serv_out_list}{a named list of functions that render output. Each function is of the form function(calc), where calc is a named list containing the traditional shiny input and reactive values that have calculated values derived from input. It returns the results of a shiny render function. The name of each function corresponds to its output label.}
+\item{serv_out_list}{a named list of functions that render output. Each function is of the form function(calc, session), where calc is a named list containing the traditional Shiny input and reactive values that have calculated values derived from input, and session is the traditional Shiny server session value. It returns the results of a Shiny render function. The name of each function corresponds to its output label.}
 }
 \value{
-traditional shiny output argument
+traditional Shiny output argument
 }
 \description{
-Render server output.
+Renders server output.
 }

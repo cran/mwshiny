@@ -1,7 +1,7 @@
 Package: mwshiny
 Type: Package
 Title: 'Shiny' for Multiple Windows
-Version: 1.0.0
+Version: 1.1.0
 Date: 2019-06-09
 Authors@R: c(
   person("Hannah", "De los Santos", email = "delosh@rpi.edu", role = c("aut","cre")),
@@ -22,10 +22,10 @@ Suggests: knitr, rmarkdown, ggplot2 (>= 3.1.0), visNetwork (>= 2.0.5),
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2019-06-09 17:51:38 UTC; delosh
+Packaged: 2019-07-05 15:41:03 UTC; delosh
 Author: Hannah De los Santos [aut, cre],
   John Erickson [aut],
   Nicholas Thomson [ctb],
   Kristin Bennett [aut]
 Repository: CRAN
-Date/Publication: 2019-06-09 18:10:03 UTC
+Date/Publication: 2019-07-05 18:50:03 UTC

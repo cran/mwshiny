@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The *mwshiny* package provides a simple function, mwsApp(), which allows you to create shiny apps that span multiple windows. While it works with any package, some packages have dependencies on various .js and .css files, which are not automatically imported when creating a Multi-Window Shiny app. Thus, mwsApp() allows you to specify specific dependencies in various packages that your app uses. This vignette shows you how to do this, finding the files your packages need and specifying them directly. I'll assume basic knowledge of shiny and mwshiny throughout this vignette.
+The *mwshiny* package provides a simple function, mwsApp(), which allows you to create Shiny apps that span multiple windows. While it works with any package, some packages have dependencies on various .js and .css files, which are not automatically imported when creating a Multi-Window Shiny app. Thus, mwsApp() allows you to specify specific dependencies in various packages that your app uses. This vignette shows you how to do this, finding the files your packages need and specifying them directly. I'll assume basic knowledge of Shiny and mwshiny throughout this vignette.
 
 I'll start with setting up a basic multi-window app using the visNetwork package, which has various .js and .css dependencies.
 
@@ -94,7 +94,7 @@ ui_win[[2]] <- fluidPage(
 # now we do some calculations based on our inputs, to pass to our final rendering of our network
 serv_calc <- list()
 
-serv_calc[[1]] <- function(calc){
+serv_calc[[1]] <- function(calc, sess){
   observeEvent(calc$go, {
     # create our nodes data frame for the visNetowrk render plot to use
     calc[["nodes"]] <- data.frame(id = 1:calc$num_nodes)
@@ -108,7 +108,7 @@ serv_calc[[1]] <- function(calc){
 # now we render our output!
 serv_out <- list()
 
-serv_out[["network"]] <- function(calc){
+serv_out[["network"]] <- function(calc, sess){
   # this function renders our graph, for shiny purposes
   renderVisNetwork({
     # don't render anything if we haven't pressed the graph! button yet!
@@ -247,7 +247,9 @@ However, we know from our examination of the console that we don't need all of t
 
 ## Adding Dependencies with Specific Scripts to mwsApp()
 
-In order to add only specific dependencies, we need to find out their paths relative to the package folder. Since we've printed all the locations of our folders above, they should be easy enough to find and copy-paste appropriately. We're going to put the extensions of our .js and .css files for each package in a vector of strings as the value for our depend list:
+In order to add only specific dependencies, we need to find out their paths relative to the package folder. Since we've printed all the locations of our folders above, they should be easy enough to find and copy-paste appropriately. We're going to put the extensions of our .js and .css files for each package in a vector of strings as the value for our depend list.
+
+Note that order matters -- these scripts will be loaded in the order that they're specified. So, in the following, "htmlwidgets.js"is added first, then "vis.css", and so on. If scripts later in the order depend on previous scripts, it's important to specify the dependencies first.
 
 ```{r mwsapp specific, eval=F}
 # names of the list correspond to the package we want to import

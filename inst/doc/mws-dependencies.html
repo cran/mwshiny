@@ -12,7 +12,7 @@
 
 <meta name="author" content="Hannah De los Santos" />
 
-<meta name="date" content="2019-06-09" />
+<meta name="date" content="2019-07-05" />
 
 <title>Specifying Package JS and CSS Dependencies with mwshiny</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Specifying Package JS and CSS Dependencies with mwshiny</h1>
 <h4 class="author"><em>Hannah De los Santos</em></h4>
-<h4 class="date"><em>2019-06-09</em></h4>
+<h4 class="date"><em>2019-07-05</em></h4>
 
 
 
@@ -86,7 +86,7 @@ h4.date {
   text-align: center;
 }
 </style>
-<p>The <em>mwshiny</em> package provides a simple function, mwsApp(), which allows you to create shiny apps that span multiple windows. While it works with any package, some packages have dependencies on various .js and .css files, which are not automatically imported when creating a Multi-Window Shiny app. Thus, mwsApp() allows you to specify specific dependencies in various packages that your app uses. This vignette shows you how to do this, finding the files your packages need and specifying them directly. I’ll assume basic knowledge of shiny and mwshiny throughout this vignette.</p>
+<p>The <em>mwshiny</em> package provides a simple function, mwsApp(), which allows you to create Shiny apps that span multiple windows. While it works with any package, some packages have dependencies on various .js and .css files, which are not automatically imported when creating a Multi-Window Shiny app. Thus, mwsApp() allows you to specify specific dependencies in various packages that your app uses. This vignette shows you how to do this, finding the files your packages need and specifying them directly. I’ll assume basic knowledge of Shiny and mwshiny throughout this vignette.</p>
 <p>I’ll start with setting up a basic multi-window app using the visNetwork package, which has various .js and .css dependencies.</p>
 <div id="load-libraries-and-specify-our-inital-app" class="section level2">
 <h2>Load Libraries and Specify Our Inital App</h2>
@@ -141,7 +141,7 @@ ui_win[[<span class="dv">2</span>]] &lt;-<span class="st"> </span><span class="k
 <span class="co"># now we do some calculations based on our inputs, to pass to our final rendering of our network</span>
 serv_calc &lt;-<span class="st"> </span><span class="kw">list</span>()
 
-serv_calc[[<span class="dv">1</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc){
+serv_calc[[<span class="dv">1</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc, sess){
   <span class="kw">observeEvent</span>(calc<span class="op">$</span>go, {
     <span class="co"># create our nodes data frame for the visNetowrk render plot to use</span>
     calc[[<span class="st">&quot;nodes&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="dv">1</span><span class="op">:</span>calc<span class="op">$</span>num_nodes)
@@ -155,7 +155,7 @@ serv_calc[[<span class="dv">1</span>]] &lt;-<span class="st"> </span><span class
 <span class="co"># now we render our output!</span>
 serv_out &lt;-<span class="st"> </span><span class="kw">list</span>()
 
-serv_out[[<span class="st">&quot;network&quot;</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc){
+serv_out[[<span class="st">&quot;network&quot;</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc, sess){
   <span class="co"># this function renders our graph, for shiny purposes</span>
   <span class="kw">renderVisNetwork</span>({
     <span class="co"># don't render anything if we haven't pressed the graph! button yet!</span>
@@ -297,7 +297,8 @@ depend[[<span class="st">&quot;visNetwork&quot;</span>]] &lt;-<span class="st"> 
 </div>
 <div id="adding-dependencies-with-specific-scripts-to-mwsapp" class="section level2">
 <h2>Adding Dependencies with Specific Scripts to mwsApp()</h2>
-<p>In order to add only specific dependencies, we need to find out their paths relative to the package folder. Since we’ve printed all the locations of our folders above, they should be easy enough to find and copy-paste appropriately. We’re going to put the extensions of our .js and .css files for each package in a vector of strings as the value for our depend list:</p>
+<p>In order to add only specific dependencies, we need to find out their paths relative to the package folder. Since we’ve printed all the locations of our folders above, they should be easy enough to find and copy-paste appropriately. We’re going to put the extensions of our .js and .css files for each package in a vector of strings as the value for our depend list.</p>
+<p>Note that order matters – these scripts will be loaded in the order that they’re specified. So, in the following, “htmlwidgets.js”is added first, then “vis.css”, and so on. If scripts later in the order depend on previous scripts, it’s important to specify the dependencies first.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># names of the list correspond to the package we want to import</span>
 <span class="co"># we give each of them the value of a vector of strings corresponding to the specific scripts we want to import</span>
 depend[[<span class="st">&quot;htmlwidgets&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;www/htmlwidgets.js&quot;</span>)
