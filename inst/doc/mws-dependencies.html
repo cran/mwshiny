@@ -12,9 +12,9 @@
 
 <meta name="author" content="Hannah De los Santos" />
 
-<meta name="date" content="2019-07-05" />
+<meta name="date" content="2019-07-31" />
 
-<title>Specifying Package JS and CSS Dependencies with mwshiny</title>
+<title>Specifying Package JS and CSS Dependencies with mwshiny v1.0.0/v1.1.0</title>
 
 
 
@@ -68,9 +68,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Specifying Package JS and CSS Dependencies with mwshiny</h1>
+<h1 class="title toc-ignore">Specifying Package JS and CSS Dependencies with mwshiny v1.0.0/v1.1.0</h1>
 <h4 class="author"><em>Hannah De los Santos</em></h4>
-<h4 class="date"><em>2019-07-05</em></h4>
+<h4 class="date"><em>2019-07-31</em></h4>
 
 
 
@@ -86,6 +86,7 @@ h4.date {
   text-align: center;
 }
 </style>
+<p><strong>Note that this vignette only applies to mwshiny v1.1.0/v1.1.0. In newer versions of mwshiny, dependencies are automatically imported. It is strongly recommended to use mwshiny v2.0.0 and above.</strong></p>
 <p>The <em>mwshiny</em> package provides a simple function, mwsApp(), which allows you to create Shiny apps that span multiple windows. While it works with any package, some packages have dependencies on various .js and .css files, which are not automatically imported when creating a Multi-Window Shiny app. Thus, mwsApp() allows you to specify specific dependencies in various packages that your app uses. This vignette shows you how to do this, finding the files your packages need and specifying them directly. I’ll assume basic knowledge of Shiny and mwshiny throughout this vignette.</p>
 <p>I’ll start with setting up a basic multi-window app using the visNetwork package, which has various .js and .css dependencies.</p>
 <div id="load-libraries-and-specify-our-inital-app" class="section level2">
@@ -94,7 +95,6 @@ h4.date {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># our multi-window shiny friend</span>
 <span class="kw">library</span>(mwshiny)</code></pre></div>
 <pre><code>## Loading required package: shiny</code></pre>
-<pre><code>## Loading required package: htmltools</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visNetwork is a package for visualization of graphs and networks, and is dependent on .js and .css scripts for visualizations in Shiny apps</span>
 <span class="kw">library</span>(visNetwork)</code></pre></div>
 <p>Next, I’ll just naively specify a simple mwshiny app without any dependencies. My app is going to have two windows: “controller” and “visualization” windows. The controller specifies the number of nodes and edges in my graph, and the visualization window just shows our graph.</p>

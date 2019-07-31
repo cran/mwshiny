@@ -18,13 +18,11 @@ summary(iris) # just to get a look at what we're dealing with here
 
 
 ## ----ui------------------------------------------------------------------
-# vector of strings that are the names of my windows
-win_titles <- c("Controller","Scatter")
-
+# named list of ui pages that are the contain the title and content of each of my windows
 ui_win <- list()
 
 # first we add what we want to see in the controller to the list
-ui_win[[1]] <- fluidPage(
+ui_win[["Controller"]] <- fluidPage(
   titlePanel("Iris Dataset Explorer: Controller"),
   sidebarLayout(
     sidebarPanel(
@@ -51,7 +49,7 @@ ui_win[[1]] <- fluidPage(
 )
 
 # then we add what we want to see in the scatter section
-ui_win[[2]] <- fluidPage(
+ui_win[["Scatter"]] <- fluidPage(
   titlePanel("Iris Dataset Explorer: Scatter"),
   plotOutput(outputId = "iris_scatter")
 )
@@ -100,7 +98,7 @@ serv_out[["iris_scatter"]] <- function(calc, sess){
 
 ## ----mwsapp, eval=F------------------------------------------------------
 #  #run!
-#  mwsApp(win_titles, ui_win, serv_calc, serv_out, depend = list())
+#  mwsApp(ui_win, serv_calc, serv_out)
 
 ## ---- out.width="400px", fig.align='center', echo=F----------------------
 knitr::include_graphics("figures/selector.png")
