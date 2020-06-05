@@ -12,7 +12,7 @@
 
 <meta name="author" content="Hannah De los Santos" />
 
-<meta name="date" content="2019-07-31" />
+<meta name="date" content="2020-06-05" />
 
 <title>mwshiny: Creating a Multi-Window Shiny App</title>
 
@@ -20,46 +20,254 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -70,7 +278,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">mwshiny: Creating a Multi-Window Shiny App</h1>
 <h4 class="author"><em>Hannah De los Santos</em></h4>
-<h4 class="date"><em>2019-07-31</em></h4>
+<h4 class="date"><em>2020-06-05</em></h4>
 
 
 
@@ -91,14 +299,14 @@ h4.date {
 <div id="load-libraries-and-datasets" class="section level2">
 <h2>Load Libraries and Datasets</h2>
 <p>As in any typical Shiny app, you start by loading any necessary libraries and data that you want to be globally accessed. I’ll start by doing that with visualization libraries and the iris dataset.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load libraries</span>
-<span class="co"># note that attaching mwshiny also attaches Shiny</span>
-<span class="kw">library</span>(mwshiny) <span class="co"># our multiwindow app</span>
-<span class="kw">library</span>(ggplot2) <span class="co"># cool visualizations</span>
-<span class="kw">library</span>(datasets) <span class="co"># contains the iris dataset</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># load libraries</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"># note that attaching mwshiny also attaches Shiny</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(mwshiny) <span class="co"># our multiwindow app</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(ggplot2) <span class="co"># cool visualizations</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(datasets) <span class="co"># contains the iris dataset</span></a></code></pre></div>
 <p>Let’s load our iris data and get an idea of what it looks like.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(iris) <span class="co"># load iris data</span>
-<span class="kw">summary</span>(iris) <span class="co"># just to get a look at what we're dealing with here</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">data</span>(iris) <span class="co"># load iris data</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">summary</span>(iris) <span class="co"># just to get a look at what we&#39;re dealing with here</span></a></code></pre></div>
 <pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
 ##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
 ##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
@@ -117,41 +325,41 @@ h4.date {
 <div id="set-up-ui-for-each-window" class="section level2">
 <h2>Set Up UI for Each Window</h2>
 <p>Now that I’ve loaded my data and packages, I need to set up what my windows are going to look like. For this mwshiny app, I’m going to have one window be my “controller”, where I change all my inputs, and the other one be a window where my output is going to be. My output is going to be scatter plots of the data, colored by species.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># named list of ui pages that are the contain the title and content of each of my windows</span>
-ui_win &lt;-<span class="st"> </span><span class="kw">list</span>()
-
-<span class="co"># first we add what we want to see in the controller to the list</span>
-ui_win[[<span class="st">&quot;Controller&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">fluidPage</span>(
-  <span class="kw">titlePanel</span>(<span class="st">&quot;Iris Dataset Explorer: Controller&quot;</span>),
-  <span class="kw">sidebarLayout</span>(
-    <span class="kw">sidebarPanel</span>(
-      <span class="co"># choose what goes on the x axis</span>
-      <span class="kw">selectInput</span>(<span class="dt">inputId =</span> <span class="st">&quot;x_axis&quot;</span>,
-                  <span class="dt">label =</span> <span class="st">&quot;What would you like to see on the x axis?&quot;</span>,
-                  <span class="dt">choices =</span> <span class="kw">colnames</span>(iris)[<span class="kw">colnames</span>(iris)<span class="op">!=</span><span class="st">&quot;Species&quot;</span>]),
-      <span class="co"># choose what goes on the y axis</span>
-      <span class="kw">selectInput</span>(<span class="dt">inputId =</span> <span class="st">&quot;y_axis&quot;</span>,
-                  <span class="dt">label =</span> <span class="st">&quot;What would you like to see on the y axis?&quot;</span>,
-                  <span class="dt">choices =</span> <span class="kw">colnames</span>(iris)[<span class="kw">colnames</span>(iris)<span class="op">!=</span><span class="st">&quot;Species&quot;</span>]),
-      <span class="co"># choose which groups you want to see</span>
-      <span class="kw">checkboxGroupInput</span>(<span class="dt">inputId =</span> <span class="st">&quot;spec&quot;</span>,
-                         <span class="dt">label =</span> <span class="st">&quot;Which species would you like to see?&quot;</span>,
-                         <span class="dt">choices =</span> <span class="kw">as.character</span>(<span class="kw">unique</span>(iris<span class="op">$</span>Species)),
-                         <span class="dt">selected =</span> <span class="kw">as.character</span>(<span class="kw">unique</span>(iris<span class="op">$</span>Species))),
-      <span class="co"># only build the scatter plot when this is clicked</span>
-      <span class="kw">actionButton</span>(<span class="dt">inputId =</span> <span class="st">&quot;go&quot;</span>,
-                   <span class="dt">label =</span> <span class="st">&quot;Build!&quot;</span>)
-    ),
-    <span class="co"># just an empty main panel</span>
-    <span class="kw">mainPanel</span>()
-  )
-)
-
-<span class="co"># then we add what we want to see in the scatter section</span>
-ui_win[[<span class="st">&quot;Scatter&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">fluidPage</span>(
-  <span class="kw">titlePanel</span>(<span class="st">&quot;Iris Dataset Explorer: Scatter&quot;</span>),
-  <span class="kw">plotOutput</span>(<span class="dt">outputId =</span> <span class="st">&quot;iris_scatter&quot;</span>)
-)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># named list of ui pages that are the contain the title and content of each of my windows</span></a>
+<a class="sourceLine" id="cb4-2" title="2">ui_win &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># first we add what we want to see in the controller to the list</span></a>
+<a class="sourceLine" id="cb4-5" title="5">ui_win[[<span class="st">&quot;Controller&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">fluidPage</span>(</a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="kw">titlePanel</span>(<span class="st">&quot;Iris Dataset Explorer: Controller&quot;</span>),</a>
+<a class="sourceLine" id="cb4-7" title="7">  <span class="kw">sidebarLayout</span>(</a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="kw">sidebarPanel</span>(</a>
+<a class="sourceLine" id="cb4-9" title="9">      <span class="co"># choose what goes on the x axis</span></a>
+<a class="sourceLine" id="cb4-10" title="10">      <span class="kw">selectInput</span>(<span class="dt">inputId =</span> <span class="st">&quot;x_axis&quot;</span>,</a>
+<a class="sourceLine" id="cb4-11" title="11">                  <span class="dt">label =</span> <span class="st">&quot;What would you like to see on the x axis?&quot;</span>,</a>
+<a class="sourceLine" id="cb4-12" title="12">                  <span class="dt">choices =</span> <span class="kw">colnames</span>(iris)[<span class="kw">colnames</span>(iris)<span class="op">!=</span><span class="st">&quot;Species&quot;</span>]),</a>
+<a class="sourceLine" id="cb4-13" title="13">      <span class="co"># choose what goes on the y axis</span></a>
+<a class="sourceLine" id="cb4-14" title="14">      <span class="kw">selectInput</span>(<span class="dt">inputId =</span> <span class="st">&quot;y_axis&quot;</span>,</a>
+<a class="sourceLine" id="cb4-15" title="15">                  <span class="dt">label =</span> <span class="st">&quot;What would you like to see on the y axis?&quot;</span>,</a>
+<a class="sourceLine" id="cb4-16" title="16">                  <span class="dt">choices =</span> <span class="kw">colnames</span>(iris)[<span class="kw">colnames</span>(iris)<span class="op">!=</span><span class="st">&quot;Species&quot;</span>]),</a>
+<a class="sourceLine" id="cb4-17" title="17">      <span class="co"># choose which groups you want to see</span></a>
+<a class="sourceLine" id="cb4-18" title="18">      <span class="kw">checkboxGroupInput</span>(<span class="dt">inputId =</span> <span class="st">&quot;spec&quot;</span>,</a>
+<a class="sourceLine" id="cb4-19" title="19">                         <span class="dt">label =</span> <span class="st">&quot;Which species would you like to see?&quot;</span>,</a>
+<a class="sourceLine" id="cb4-20" title="20">                         <span class="dt">choices =</span> <span class="kw">as.character</span>(<span class="kw">unique</span>(iris<span class="op">$</span>Species)),</a>
+<a class="sourceLine" id="cb4-21" title="21">                         <span class="dt">selected =</span> <span class="kw">as.character</span>(<span class="kw">unique</span>(iris<span class="op">$</span>Species))),</a>
+<a class="sourceLine" id="cb4-22" title="22">      <span class="co"># only build the scatter plot when this is clicked</span></a>
+<a class="sourceLine" id="cb4-23" title="23">      <span class="kw">actionButton</span>(<span class="dt">inputId =</span> <span class="st">&quot;go&quot;</span>,</a>
+<a class="sourceLine" id="cb4-24" title="24">                   <span class="dt">label =</span> <span class="st">&quot;Build!&quot;</span>)</a>
+<a class="sourceLine" id="cb4-25" title="25">    ),</a>
+<a class="sourceLine" id="cb4-26" title="26">    <span class="co"># just an empty main panel</span></a>
+<a class="sourceLine" id="cb4-27" title="27">    <span class="kw">mainPanel</span>()</a>
+<a class="sourceLine" id="cb4-28" title="28">  )</a>
+<a class="sourceLine" id="cb4-29" title="29">)</a>
+<a class="sourceLine" id="cb4-30" title="30"></a>
+<a class="sourceLine" id="cb4-31" title="31"><span class="co"># then we add what we want to see in the scatter section</span></a>
+<a class="sourceLine" id="cb4-32" title="32">ui_win[[<span class="st">&quot;Scatter&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">fluidPage</span>(</a>
+<a class="sourceLine" id="cb4-33" title="33">  <span class="kw">titlePanel</span>(<span class="st">&quot;Iris Dataset Explorer: Scatter&quot;</span>),</a>
+<a class="sourceLine" id="cb4-34" title="34">  <span class="kw">plotOutput</span>(<span class="dt">outputId =</span> <span class="st">&quot;iris_scatter&quot;</span>)</a>
+<a class="sourceLine" id="cb4-35" title="35">)</a></code></pre></div>
 <p>Note that each of ui_win’s names correspond to what I want the name of my window to be (i.e., the UI I want for the controller window is first, then the scatter UI is second in the list). Further, window titles cannot contain spaces or have any duplicates.</p>
 </div>
 <div id="set-up-the-calculations" class="section level2">
@@ -160,54 +368,54 @@ ui_win[[<span class="st">&quot;Scatter&quot;</span>]] &lt;-<span class="st"> </s
 <p>serv_calc is a list of functions of the form function(calc, sess), where any calculations based on input are done. calc is a reactive list containing all the input values with the same names and can be accessed in the same way (calc$x or calc[[x]]). Any variables that you’ve made that you want to pass to input should be added to calc with a name, which is a named list of reactive variables. This is done in the traditional manner, i.e. calc[[“y”]] &lt;- y. sess is the traditional Shiny session variable. Note that these functions follow the traditional Shiny restrictions (reactive variables can only be used in a reactive context, etc.)!</p>
 <p>Further, if you want render objects later based on an observe()-type change, assign the result that you will be using in the render to calc. We can see an example of that interaction below, where we use calc[[“sub.df”]] in our render, which changes as the result of our observeEvent().</p>
 <p>It’s recommended for clarity that you make one function entry for each observe()-type function you’re using, but it’s not explicitly necessary.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># setting up the list of calculations I want to do</span>
-serv_calc &lt;-<span class="st"> </span><span class="kw">list</span>()
-
-<span class="co"># I only want to build a scatterplot when I click my build button, so my list will be of length 1</span>
-serv_calc[[<span class="dv">1</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc, sess){
-  <span class="co"># this is going to activate any time I press &quot;build!&quot;</span>
-  <span class="kw">observeEvent</span>(calc<span class="op">$</span>go, {
-    <span class="co"># create our data frame for visualizing</span>
-    sub.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;x&quot;</span> =<span class="st"> </span>iris[iris<span class="op">$</span>Species <span class="op">%in%</span><span class="st"> </span>calc<span class="op">$</span>spec,calc<span class="op">$</span>x_axis],
-                         <span class="st">&quot;y&quot;</span> =<span class="st"> </span>iris[iris<span class="op">$</span>Species <span class="op">%in%</span><span class="st"> </span>calc<span class="op">$</span>spec,calc<span class="op">$</span>y_axis],
-                         <span class="st">&quot;species&quot;</span>=iris[iris<span class="op">$</span>Species <span class="op">%in%</span><span class="st"> </span>calc<span class="op">$</span>spec,<span class="st">&quot;Species&quot;</span>])
-    
-    <span class="co"># add this to calc, since we want to use this in our rendering</span>
-    calc[[<span class="st">&quot;sub.df&quot;</span>]] &lt;-<span class="st"> </span>sub.df
-  })
-}</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># setting up the list of calculations I want to do</span></a>
+<a class="sourceLine" id="cb5-2" title="2">serv_calc &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co"># I only want to build a scatterplot when I click my build button, so my list will be of length 1</span></a>
+<a class="sourceLine" id="cb5-5" title="5">serv_calc[[<span class="dv">1</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc, sess){</a>
+<a class="sourceLine" id="cb5-6" title="6">  <span class="co"># this is going to activate any time I press &quot;build!&quot;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">  <span class="kw">observeEvent</span>(calc<span class="op">$</span>go, {</a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="co"># create our data frame for visualizing</span></a>
+<a class="sourceLine" id="cb5-9" title="9">    sub.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">&quot;x&quot;</span> =<span class="st"> </span>iris[iris<span class="op">$</span>Species <span class="op">%in%</span><span class="st"> </span>calc<span class="op">$</span>spec,calc<span class="op">$</span>x_axis],</a>
+<a class="sourceLine" id="cb5-10" title="10">                         <span class="st">&quot;y&quot;</span> =<span class="st"> </span>iris[iris<span class="op">$</span>Species <span class="op">%in%</span><span class="st"> </span>calc<span class="op">$</span>spec,calc<span class="op">$</span>y_axis],</a>
+<a class="sourceLine" id="cb5-11" title="11">                         <span class="st">&quot;species&quot;</span>=iris[iris<span class="op">$</span>Species <span class="op">%in%</span><span class="st"> </span>calc<span class="op">$</span>spec,<span class="st">&quot;Species&quot;</span>])</a>
+<a class="sourceLine" id="cb5-12" title="12">    </a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="co"># add this to calc, since we want to use this in our rendering</span></a>
+<a class="sourceLine" id="cb5-14" title="14">    calc[[<span class="st">&quot;sub.df&quot;</span>]] &lt;-<span class="st"> </span>sub.df</a>
+<a class="sourceLine" id="cb5-15" title="15">  })</a>
+<a class="sourceLine" id="cb5-16" title="16">}</a></code></pre></div>
 </div>
 <div id="set-up-the-output" class="section level2">
 <h2>Set Up the Output</h2>
 <p>Now that I’ve calculated based on input and set that up to work only when I click “build!”, I want to actually render my plot for output.</p>
 <p>serv_out is a named list of functions, where each function in the list corresponds to the output that it renders. Functions are of the form function(calc, sess), where calc is the named list which contains traditional Shiny input and the calculated variables that we added to previously, and sess is the traditional Shiny session variable. Entries in both lists can be accessed in a normal manner (i.e. calc$x or calc[[“y”]]). These functions also follow the standard Shiny restrictions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set up our serv_out list</span>
-serv_out &lt;-<span class="st"> </span><span class="kw">list</span>()
-
-<span class="co"># we're just rendering our scatter plot based on the iris dataset</span>
-<span class="co"># note the name is the same as the outputid</span>
-serv_out[[<span class="st">&quot;iris_scatter&quot;</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc, sess){
-  <span class="kw">renderPlot</span>({
-    <span class="co"># we add this check to make sure our plot doesn't try to render before we've ever pressed &quot;Build!&quot;</span>
-    <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(calc<span class="op">$</span>sub.df)){
-      <span class="co"># build scatterplot</span>
-      <span class="kw">ggplot</span>(calc<span class="op">$</span>sub.df, <span class="kw">aes</span>(x, y, <span class="dt">color =</span> <span class="kw">factor</span>(species)))<span class="op">+</span>
-<span class="st">        </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="st"> </span><span class="co"># make scatter</span>
-<span class="st">        </span><span class="kw">ggtitle</span>(<span class="st">&quot;Iris Comparisons&quot;</span>)<span class="op">+</span><span class="st"> </span><span class="co"># add title</span>
-<span class="st">        </span><span class="kw">xlab</span>(calc<span class="op">$</span>x_axis)<span class="op">+</span><span class="st"> </span><span class="co"># change x axis label</span>
-<span class="st">        </span><span class="kw">ylab</span>(calc<span class="op">$</span>y_axis)<span class="op">+</span><span class="st"> </span><span class="co"># change y axis label</span>
-<span class="st">        </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&quot;species&quot;</span>)<span class="op">+</span><span class="st"> </span><span class="co"># change legend label</span>
-<span class="st">        </span><span class="ot">NULL</span>
-    }
-  })
-}</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># set up our serv_out list</span></a>
+<a class="sourceLine" id="cb6-2" title="2">serv_out &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co"># we&#39;re just rendering our scatter plot based on the iris dataset</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co"># note the name is the same as the outputid</span></a>
+<a class="sourceLine" id="cb6-6" title="6">serv_out[[<span class="st">&quot;iris_scatter&quot;</span>]] &lt;-<span class="st"> </span><span class="cf">function</span>(calc, sess){</a>
+<a class="sourceLine" id="cb6-7" title="7">  <span class="kw">renderPlot</span>({</a>
+<a class="sourceLine" id="cb6-8" title="8">    <span class="co"># we add this check to make sure our plot doesn&#39;t try to render before we&#39;ve ever pressed &quot;Build!&quot;</span></a>
+<a class="sourceLine" id="cb6-9" title="9">    <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(calc<span class="op">$</span>sub.df)){</a>
+<a class="sourceLine" id="cb6-10" title="10">      <span class="co"># build scatterplot</span></a>
+<a class="sourceLine" id="cb6-11" title="11">      <span class="kw">ggplot</span>(calc<span class="op">$</span>sub.df, <span class="kw">aes</span>(x, y, <span class="dt">color =</span> <span class="kw">factor</span>(species)))<span class="op">+</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="st">        </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="st"> </span><span class="co"># make scatter</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="st">        </span><span class="kw">ggtitle</span>(<span class="st">&quot;Iris Comparisons&quot;</span>)<span class="op">+</span><span class="st"> </span><span class="co"># add title</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="st">        </span><span class="kw">xlab</span>(calc<span class="op">$</span>x_axis)<span class="op">+</span><span class="st"> </span><span class="co"># change x axis label</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="st">        </span><span class="kw">ylab</span>(calc<span class="op">$</span>y_axis)<span class="op">+</span><span class="st"> </span><span class="co"># change y axis label</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="st">        </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&quot;species&quot;</span>)<span class="op">+</span><span class="st"> </span><span class="co"># change legend label</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="st">        </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb6-18" title="18">    }</a>
+<a class="sourceLine" id="cb6-19" title="19">  })</a>
+<a class="sourceLine" id="cb6-20" title="20">}</a></code></pre></div>
 </div>
 <div id="run-multi-window-shiny-app" class="section level2">
 <h2>Run Multi-Window Shiny App!</h2>
 <p>Now that we have all our pieces, we can just plug these in and run our app!</p>
 <p>If you are using an older version of mwshiny (v1.1.0 or v1.1.0), JS/CSS dependencies may be required, as well as different syntax. For more information on this previous version and an example using visNetwork to find and specify dependencies, please look at our other vignette “Specifying Package JS and CSS Dependencies with mwshiny v1.0.0/v1.1.0”.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#run!</span>
-<span class="kw">mwsApp</span>(ui_win, serv_calc, serv_out)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co">#run!</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">mwsApp</span>(ui_win, serv_calc, serv_out)</a></code></pre></div>
 <p>Note that multi-windowed apps work better when run in an external browser. Since I can’t show a multi-window Shiny app in a vignette form, here are some images of the final result.</p>
 <p>When you initially run mwsApp(), you’ll first be greeted by the selection window, where links to your separate windows are displayed:</p>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABF4AAAKQCAYAAACmdr4BAAAgAElEQVR4nO3d22+UV5ro4fmfcmWhqOUbWpmWIqXV00j0jJRctdKtUTQaLrI9G2jDTjoQJx3kkMmOgVaYSZhOIGonIB8KxwTbcQzm1OYQk7HBCcymZbPZW2ZEyTfvXOCq+mxXGXN4G4p5HqluqO+w6uPKP61vrb8KAAAAAFL81eMeAAAAAMDTSngBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACA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AAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAACrRQk4AAAF8SURBVAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJBEeAEAAABIIrwAAAAAJBFeAAAAAJIILwAAAABJhBcAAACAJMILAAAAQBLhBQAAACCJ8AIAAACQRHgBAAAASCK8AAAAACQRXgAAAACSCC8AAAAASYQXAAAAgCTCCwAAAEAS4QUAAAAgifACAAAAkER4AQAAAEgivAAAAAAkEV4AAAAAkggvAAAAAEmEFwAAAIAkwgsAAABAEuEFAAAAIInwAgAAAJDkvwCpDI+NFDDpdQAAAABJRU5ErkJggg==" width="400px" style="display: block; margin: auto;" /></p>
